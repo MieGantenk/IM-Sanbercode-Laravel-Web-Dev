@@ -1,9 +1,16 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\FormController;
-use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\masterController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\WelcomeController;
 
-Route::get('/', [DashboardController::class, 'index']);
-Route::get('/signUp', [FormController::class, 'signUp']);
-Route::get('/welcome', [FormController::class, 'welcome']);
+
+Route::get('/master', [masterController::class, 'master']);
+Route::get('/', [HomeController::class, 'index']);
+Route::get('/register', [RegisterController::class, 'register']);
+Route::get('/welcome', [WelcomeController::class, 'welcome']);
+
+
+
