@@ -9,11 +9,11 @@
         @csrf
         <div class="mb-3">
             <label for="name" class="form-label">Nama Product</label>
-            <input type="text" name="name" id="name" class="form-control" placeholder="Masukkan nama produk">
+            <input type="text" name="name" id="name" class="form-control" placeholder="Masukkan nama category">
         </div>
         <div class="mb-3">
             <label for="description" class="form-label">Deskripsi</label>
-            <textarea name="description" id="description" class="form-control" rows="3" placeholder="Masukkan deskripsi produk"></textarea>
+            <textarea name="description" id="description" class="form-control" rows="3" placeholder="Masukkan deskripsi category"></textarea>
         </div>
         <button type="submit" class="btn btn-success">
             <i class="ti ti-check"></i> Simpan

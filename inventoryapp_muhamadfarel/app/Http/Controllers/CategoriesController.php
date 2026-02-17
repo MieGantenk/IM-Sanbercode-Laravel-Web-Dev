@@ -3,13 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use App\Models\Category;
 
 class CategoriesController extends Controller
 {
     public function index() {
-        $categories = DB::table('categories')->get();
-
+        $categories = Category::with('products')->get();
         return view('src.template.categories', compact('categories'));
     }
 
@@ -18,39 +17,47 @@ class CategoriesController extends Controller
     }
 
     public function store(Request $request) {
-        DB::table('categories')->insert([
-            'name' => $request->name,
-            'description' => $request->description,
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'required|string',
         ]);
 
-        return redirect()->route('categories.index');
+        Category::create($request->only(['name', 'description']));
+
+        return redirect()->route('categories.index')->with('success', 'category berhasil ditambahkan');
     }
 
     public function show($id) {
-        $category = DB::table('categories')->where('id', $id)->first();
-
-        return view('src.template.show', compact('category'));
+        $category = Category::with('products')->findOrFail($id);
+        return view('src.template.listcategory', compact('category'));
     }
 
-    public function edit($id) {
-        $category = DB::table('categories')->where('id', $id)->first();
 
+    public function edit($id) {
+        $category = Category::findOrFail($id);
         return view('src.template.edit', compact('category'));
     }
 
     public function update(Request $request, $id) {
-        DB::table('categories')->where('id', $id)->update([
-            'name' => $request->name,
-            'description' => $request->description,
+        $category = Category::findOrFail($id);
+
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'required|string',
         ]);
 
-        return redirect()->route('categories.index');
+        $category->update($request->only(['name', 'description']));
+
+        return redirect()->route('categories.index')->with('success', 'Produk berhasil diedit');
     }
 
     public function destroy($id) {
-        DB::table('categories')->where('id', $id)->delete();
+        $category = Category::findOrFail($id);
+        $category->delete();
 
-        return redirect()->route('categories.index');
+        return redirect()->route('categories.index')->with('success', 'Produk berhasil dihapus');
     }
 }
+
+
 

@@ -29,40 +29,67 @@
         <!-- Sidebar navigation-->
         <nav class="sidebar-nav scroll-sidebar" data-simplebar="">
           <ul id="sidebarnav">
+            <h1>{{ auth()->user()->name }}</h1>
+
             <li class="nav-small-cap">
               <i class="ti ti-dots nav-small-cap-icon fs-6"></i>
               <span class="hide-menu">Home</span>
             </li>
-            <li class="sidebar-item">
-              <a class="sidebar-link" href="{{ url('/', []) }}" aria-expanded="false">
-                <span>
-                  <iconify-icon icon="solar:home-smile-bold-duotone" class="fs-6"></iconify-icon>
-                </span>
-                <span class="hide-menu">Dashboard</span>
-              </a>
-            </li>
-            <li class="nav-small-cap">
-              <i class="ti ti-dots nav-small-cap-icon fs-6"></i>
-              <span class="hide-menu">UI COMPONENTS</span>
-            </li>
-            <li class="sidebar-item">
-              <a class="sidebar-link" href="{{ url('/register', []) }}" aria-expanded="false">
-                <span>
-                  <iconify-icon icon="solar:layers-minimalistic-bold-duotone" class="fs-6"></iconify-icon>
-                </span>
-                <span class="hide-menu">Form Input</span>
-              </a>
-            </li>
 
-            <li class="sidebar-item">
-              <a class="sidebar-link" href="{{ url('/categories', []) }}" aria-expanded="false">
-                <span>
-                  <iconify-icon icon="solar:layers-minimalistic-bold-duotone" class="fs-6"></iconify-icon>
-                </span>
-                <span class="hide-menu">Categories</span>
-              </a>
-            </li>
+            @if(auth()->check() && auth()->user()->role === 'admin')
+              <li class="sidebar-item">
+                <a class="sidebar-link" href="{{ route('admin.dashboard') }}">
+                  <span><iconify-icon icon="solar:home-smile-bold-duotone" class="fs-6"></iconify-icon></span>
+                  <span class="hide-menu">Dashboard</span>
+                </a>
+              </li>
+            
+              <li class="sidebar-item">
+                <a class="sidebar-link" href="{{ route('categories.index') }}">
+                  <span><iconify-icon icon="solar:layers-minimalistic-bold-duotone" class="fs-6"></iconify-icon></span>
+                  <span class="hide-menu">Categories</span>
+                </a>
+              </li>
+              <li class="sidebar-item">
+                <a class="sidebar-link" href="{{ route('products.index') }}">
+                  <span><iconify-icon icon="solar:layers-minimalistic-bold-duotone" class="fs-6"></iconify-icon></span>
+                  <span class="hide-menu">Products</span>
+                </a>
+              </li>
+              <li class="sidebar-item">
+                <a class="sidebar-link" href="{{ route('transactions.index') }}">
+                  <span><iconify-icon icon="solar:layers-minimalistic-bold-duotone" class="fs-6"></iconify-icon></span>
+                  <span class="hide-menu">Transaction</span>
+                </a>
+              </li>
+            @endif
+
+            @if(auth()->check() && auth()->user()->role === 'staff')
+              <li class="sidebar-item">
+                <a class="sidebar-link" href="{{ route('index') }}">
+                  <span><iconify-icon icon="solar:home-smile-bold-duotone" class="fs-6"></iconify-icon></span>
+                  <span class="hide-menu">Dashboard</span>
+                </a>
+              </li>
+
+              <li class="sidebar-item">
+                <a class="sidebar-link" href="{{ route('products.index', ['id'=>1]) }}">
+                  <span><iconify-icon icon="solar:layers-minimalistic-bold-duotone" class="fs-6"></iconify-icon></span>
+                  <span class="hide-menu">Products</span>
+                </a>
+              </li>
+
+              <li class="sidebar-item">
+                <a class="sidebar-link" href="{{ route('transactions.index') }}">
+                  <span><iconify-icon icon="solar:layers-minimalistic-bold-duotone" class="fs-6"></iconify-icon></span>
+                  <span class="hide-menu">Transaction</span>
+                </a>
+              </li>
+            @endif
+
           </ul>
+
+
         <!-- End Sidebar navigation -->
       </div>
       <!-- End Sidebar scroll-->
@@ -89,11 +116,14 @@
                 </a>
                 <div class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up" aria-labelledby="drop2">
                   <div class="message-body">
-                    <a href="javascript:void(0)" class="d-flex align-items-center gap-2 dropdown-item">
+                    <a href="{{ route('profile.index') }}" class="d-flex align-items-center gap-2 dropdown-item">
                       <i class="ti ti-user fs-6"></i>
                       <p class="mb-0 fs-3">My Profile</p>
                     </a>
-                    <a href="./authentication-login.html" class="btn btn-outline-primary mx-3 mt-2 d-block">Logout</a>
+                    <form action="{{ route('auth.logout') }}" method="POST" class="mx-3 mt-2 d-block">
+                      @csrf
+                      <button type="submit" class="btn btn-outline-primary w-100">Logout</button>
+                    </form>
                   </div>
                 </div>
               </li>

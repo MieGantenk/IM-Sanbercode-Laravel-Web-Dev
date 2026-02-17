@@ -9,6 +9,12 @@
         <i class="ti ti-plus"></i> Tambah Category
     </a>
 
+    @if(session('success'))
+        <div class="alert alert-success mt-2">
+            {{ session('success') }}
+        </div>
+    @endif
+
     @php $no = 1 @endphp
 
     <table class="table table-bordered">
